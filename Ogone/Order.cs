@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Ogone
@@ -11,7 +10,6 @@ namespace Ogone
     /// </summary>
     public class OgoneOrder
     {
-
         private SHA _sha;
         private string _shaOrderKey;
         private string _pspID;
@@ -29,7 +27,8 @@ namespace Ogone
                 throw new ArgumentException("SHA-key's and ID are required");
             }
 
-            if (orderID < 1) {
+            if (orderID < 1)
+            {
                 throw new ArgumentException("Invalid Order ID");
             }
 
@@ -44,7 +43,14 @@ namespace Ogone
             this._orderID = orderID;
             this._price = price;
             extrafields = new Dictionary<InFields, string>();
+        }
 
+        public SHA SHA
+        {
+            get
+            {
+                return _sha;
+            }
         }
 
         public string SHAOrderKey
@@ -242,18 +248,7 @@ namespace Ogone
                     sbHashString.Append(item.Key + "=" + item.Value + SHAOrderKey);
                 }
 
-                switch (_sha)
-                {
-                    case SHA.SHA1:
-                        result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), new SHA1CryptoServiceProvider());
-                        break;
-                    case SHA.SHA256:
-                        result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), new SHA256CryptoServiceProvider());
-                        break;
-                    case SHA.SHA512:
-                        result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), new SHA512CryptoServiceProvider());
-                        break;
-                }
+                result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), _sha);
 
                 return result;
             }
@@ -268,7 +263,7 @@ namespace Ogone
             {
                 IDictionary<string, string> result = new Dictionary<string, string>();
 
-                foreach(KeyValuePair<string, string> item in GetAllParameters())
+                foreach (KeyValuePair<string, string> item in GetAllParameters())
                 {
                     result.Add(item);
                 }
@@ -283,7 +278,8 @@ namespace Ogone
         /// </summary>
         /// <param name="key">Parametername for Ogone</param>
         /// <param name="value">The value of the parameter</param>
-        public void AddField(InFields key, string value){
+        public void AddField(InFields key, string value)
+        {
             if (!extrafields.ContainsKey(key) && !string.IsNullOrWhiteSpace(value))
             {
                 extrafields.Add(key, value);

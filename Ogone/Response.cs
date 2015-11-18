@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Ogone
@@ -12,7 +11,6 @@ namespace Ogone
     /// </summary>
     public class Response
     {
-
         private string _shaSign;
         private SHA _sha;
         private string _shaAcceptKey;
@@ -30,10 +28,10 @@ namespace Ogone
             this._sha = sha;
             this._shaAcceptKey = shaAcceptKey;
             fields = new Dictionary<OutFields, string>();
-
         }
 
-        public string SHASign{
+        public string SHASign
+        {
             get
             {
                 return _shaSign;
@@ -64,24 +62,13 @@ namespace Ogone
 
                 if (fields.Count > 0)
                 {
-                    
                     StringBuilder texttohash = new StringBuilder();
-                    foreach(KeyValuePair<OutFields, string> parameter in fields.OrderBy(f => f.Key.ToString())){
+                    foreach (KeyValuePair<OutFields, string> parameter in fields.OrderBy(f => f.Key.ToString()))
+                    {
                         texttohash.Append(parameter.Key.ToString() + "=" + parameter.Value + SHAAcceptKey);
                     }
-                    
-                    switch(SHA){
-                        case  SHA.SHA1:
-                            result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), new SHA1CryptoServiceProvider());
-                            break;
-                        case SHA.SHA256:
-                            result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), new SHA256CryptoServiceProvider());
-                            break;
-                        case SHA.SHA512:
-                            result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), new SHA512CryptoServiceProvider());
-                            break;
-                    }
-                        
+
+                    result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), SHA);
                 }
 
                 return result;
@@ -104,7 +91,8 @@ namespace Ogone
         /// </summary>
         /// <param name="key">Name of the parameter from Ogone</param>
         /// <param name="value">The value of the parameter</param>
-        public void AddField(OutFields key, string value){
+        public void AddField(OutFields key, string value)
+        {
             if (!fields.ContainsKey(key) && !string.IsNullOrWhiteSpace(value))
             {
                 fields.Add(key, value);
@@ -118,7 +106,8 @@ namespace Ogone
         /// <param name="value">The value of the parameter</param>
         public void AddField(string key, string value)
         {
-            if(!string.IsNullOrWhiteSpace(key)){
+            if (!string.IsNullOrWhiteSpace(key))
+            {
                 key = key.ToUpper();
                 if (Enum.IsDefined(typeof(OutFields), key))
                 {
