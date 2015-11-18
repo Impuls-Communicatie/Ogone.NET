@@ -8,10 +8,10 @@ namespace Ogone
     /// <summary>
     /// An order to send to Ogone
     /// </summary>
-    public class OgoneOrder
+    public class Request
     {
         private SHA _sha;
-        private string _shaOrderKey;
+        private string _shaInKey;
         private string _pspID;
         private int _orderID;
         private decimal _price;
@@ -19,12 +19,17 @@ namespace Ogone
         private Currency _currency = Currency.EUR;
         private IDictionary<InFields, string> extrafields;
 
-        public OgoneOrder(SHA sha, string shaOrderKey, string pspID, int orderID, decimal price)
+        public Request(SHA sha, string shaInKey, string pspID, int orderID, decimal price)
         {
 
-            if (string.IsNullOrWhiteSpace(shaOrderKey) || string.IsNullOrWhiteSpace(pspID))
+            if (string.IsNullOrWhiteSpace(shaInKey))
             {
-                throw new ArgumentException("SHA-key's and ID are required");
+                throw new ArgumentException("SHA-IN is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(pspID))
+            {
+                throw new ArgumentException("PSPID is required");
             }
 
             if (orderID < 1)
@@ -32,13 +37,13 @@ namespace Ogone
                 throw new ArgumentException("Invalid Order ID");
             }
 
-            if (price < 0)
+            if (price <= 0)
             {
                 throw new ArgumentException("Invalid price");
             }
 
             this._sha = sha;
-            this._shaOrderKey = shaOrderKey;
+            this._shaInKey = shaInKey;
             this._pspID = pspID;
             this._orderID = orderID;
             this._price = price;
@@ -57,7 +62,7 @@ namespace Ogone
         {
             get
             {
-                return _shaOrderKey;
+                return _shaInKey;
             }
         }
 
@@ -245,7 +250,7 @@ namespace Ogone
                 StringBuilder sbHashString = new StringBuilder();
                 foreach (KeyValuePair<string, string> item in parameters)
                 {
-                    sbHashString.Append(item.Key + "=" + item.Value + SHAOrderKey);
+                    sbHashString.Append(item.Key.Replace("_XX_","*XX*")  + "=" + item.Value + SHAOrderKey);
                 }
 
                 result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), _sha);

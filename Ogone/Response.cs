@@ -19,9 +19,14 @@ namespace Ogone
         public Response(string shaSign, SHA sha, string shaAcceptKey)
         {
 
-            if (string.IsNullOrWhiteSpace(shaSign) || string.IsNullOrWhiteSpace(shaAcceptKey))
+            if (string.IsNullOrWhiteSpace(shaSign))
             {
-                throw new ArgumentException("SHA-key's and ID are required");
+                throw new ArgumentException("SHA is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(shaAcceptKey))
+            {
+                throw new ArgumentException("ACCEPT KEY is required");
             }
 
             this._shaSign = shaSign;
@@ -65,7 +70,7 @@ namespace Ogone
                     StringBuilder texttohash = new StringBuilder();
                     foreach (KeyValuePair<OutFields, string> parameter in fields.OrderBy(f => f.Key.ToString()))
                     {
-                        texttohash.Append(parameter.Key.ToString() + "=" + parameter.Value + SHAAcceptKey);
+                        texttohash.Append(parameter.Key.ToString().Replace("_XX_", "*XX*") + "=" + parameter.Value + SHAAcceptKey);
                     }
 
                     result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), SHA);
