@@ -11,7 +11,7 @@ namespace Ogone
     public class Request
     {
         private SHA _sha;
-        private string _shaInKey;
+        private string _shaInSignature;
         private string _pspID;
         private int _orderID;
         private decimal _price;
@@ -19,10 +19,14 @@ namespace Ogone
         private Currency _currency = Currency.EUR;
         private IDictionary<InFields, string> extrafields;
 
-        public Request(SHA sha, string shaInKey, string pspID, int orderID, decimal price)
+        public Request(SHA sha, string shaInSignature, string pspID, int orderID, decimal price)
+            : this(sha, shaInSignature, pspID, orderID, price, Encoding.UTF8, Environment.Test)
         {
+        }
 
-            if (string.IsNullOrWhiteSpace(shaInKey))
+        public Request(SHA sha, string shaInSignature, string pspID, int orderID, decimal price, Encoding encoding, Environment environment)
+        {
+            if (string.IsNullOrWhiteSpace(shaInSignature))
             {
                 throw new ArgumentException("SHA-IN is required");
             }
@@ -43,11 +47,14 @@ namespace Ogone
             }
 
             this._sha = sha;
-            this._shaInKey = shaInKey;
+            this._shaInSignature = shaInSignature;
             this._pspID = pspID;
             this._orderID = orderID;
             this._price = price;
             extrafields = new Dictionary<InFields, string>();
+
+            this.Encoding = encoding;
+            this.Environment = environment;
         }
 
         public SHA SHA
@@ -58,11 +65,11 @@ namespace Ogone
             }
         }
 
-        public string SHAOrderKey
+        public string SHAInSignature
         {
             get
             {
-                return _shaInKey;
+                return _shaInSignature;
             }
         }
 
@@ -198,6 +205,47 @@ namespace Ogone
             set;
         }
 
+        public Environment Environment
+        {
+            get;
+            set;
+        }
+
+        public Encoding Encoding
+        {
+            get;
+            set;
+        }
+
+        public string OgoneUrl
+        {
+            get
+            {
+                if (this.Environment == Environment.Production)
+                {
+                    if (this.Encoding == Ogone.Encoding.ISO_8859_1)
+                    {
+                        return "https://secure.ogone.com/ncol/prod/orderstandard.asp";
+                    }
+                    else
+                    {
+                        return "https://secure.ogone.com/ncol/prod/orderstandard_utf8.asp";
+                    }
+                }
+                else
+                {
+                    if (this.Encoding == Ogone.Encoding.ISO_8859_1)
+                    {
+                        return "https://secure.ogone.com/ncol/test/orderstandard.asp";
+                    }
+                    else
+                    {
+                        return "https://secure.ogone.com/ncol/test/orderstandard_utf8.asp";
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Get a dictionary with all Ogone parameters that were filled in and ordered by key
         /// </summary>
@@ -250,10 +298,10 @@ namespace Ogone
                 StringBuilder sbHashString = new StringBuilder();
                 foreach (KeyValuePair<string, string> item in parameters)
                 {
-                    sbHashString.Append(item.Key.Replace("_XX_","*XX*")  + "=" + item.Value + SHAOrderKey);
+                    sbHashString.Append(item.Key.Replace("_XX_","*XX*")  + "=" + item.Value + SHAInSignature);
                 }
 
-                result = HashString.GenerateHash(sbHashString.ToString(), new UTF8Encoding(), _sha);
+                result = HashString.GenerateHash(sbHashString.ToString(), this.Encoding, this.SHA);
 
                 return result;
             }

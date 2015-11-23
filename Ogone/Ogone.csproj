@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Currency.cs" />
+    <Compile Include="Encoding.cs" />
+    <Compile Include="Environment.cs" />
     <Compile Include="HashString.cs" />
     <Compile Include="InFields.cs" />
     <Compile Include="Language.cs" />

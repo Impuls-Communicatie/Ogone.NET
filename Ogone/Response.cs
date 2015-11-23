@@ -13,26 +13,31 @@ namespace Ogone
     {
         private string _shaSign;
         private SHA _sha;
-        private string _shaAcceptKey;
+        private string _shaOutSignature;
         private IDictionary<OutFields, string> fields;
 
-        public Response(string shaSign, SHA sha, string shaAcceptKey)
+        public Response(SHA sha, string shaOutSignature, string shaSign)
+            : this(sha, shaOutSignature, shaSign, Encoding.UTF8)
         {
+        }
 
+        public Response(SHA sha, string shaOutSignature, string shaSign, Encoding encoding)
+        {
             if (string.IsNullOrWhiteSpace(shaSign))
             {
                 throw new ArgumentException("SHA is required");
             }
 
-            if (string.IsNullOrWhiteSpace(shaAcceptKey))
+            if (string.IsNullOrWhiteSpace(shaOutSignature))
             {
-                throw new ArgumentException("ACCEPT KEY is required");
+                throw new ArgumentException("SHA OUT Signature is required");
             }
 
             this._shaSign = shaSign;
             this._sha = sha;
-            this._shaAcceptKey = shaAcceptKey;
+            this._shaOutSignature = shaOutSignature;
             fields = new Dictionary<OutFields, string>();
+            this.Encoding = encoding;
         }
 
         public string SHASign
@@ -51,11 +56,11 @@ namespace Ogone
             }
         }
 
-        public string SHAAcceptKey
+        public string SHAOutSignature
         {
             get
             {
-                return _shaAcceptKey;
+                return _shaOutSignature;
             }
         }
 
@@ -70,10 +75,10 @@ namespace Ogone
                     StringBuilder texttohash = new StringBuilder();
                     foreach (KeyValuePair<OutFields, string> parameter in fields.OrderBy(f => f.Key.ToString()))
                     {
-                        texttohash.Append(parameter.Key.ToString().Replace("_XX_", "*XX*") + "=" + parameter.Value + SHAAcceptKey);
+                        texttohash.Append(parameter.Key.ToString().Replace("_XX_", "*XX*") + "=" + parameter.Value + SHAOutSignature);
                     }
 
-                    result = HashString.GenerateHash(texttohash.ToString(), new UTF8Encoding(), SHA);
+                    result = HashString.GenerateHash(texttohash.ToString(), this.Encoding, this.SHA);
                 }
 
                 return result;
@@ -89,6 +94,12 @@ namespace Ogone
             {
                 return SHASign.ToLower().Equals(SHAAccept.ToLower());
             }
+        }
+
+        public Encoding Encoding
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -147,6 +158,5 @@ namespace Ogone
             }
             return result;
         }
-
     }
 }
