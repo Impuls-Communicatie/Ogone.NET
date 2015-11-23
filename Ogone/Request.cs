@@ -366,6 +366,23 @@ namespace Ogone
             return result;
         }
 
+        public string RenderHtmlForm(string submitButtonText)
+        {
+            var result = new StringBuilder();
+
+            result.AppendLine("<form action=\"" + this.OgoneUrl + "\" method=\"post\">");
+
+            foreach (var item in this.GetAllParameters())
+            {
+                result.AppendLine("\t<input type=\"hidden\" name=\"" + item.Key + "\" value=\"" + item.Value + "\" />");
+            }
+
+            result.AppendLine("\t<input type=\"submit\" value=\"" + submitButtonText + "\" />");
+            result.AppendLine("</form>");
+
+
+            return result.ToString();
+        }
     }
 
 }
