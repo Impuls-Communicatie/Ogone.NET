@@ -43,7 +43,7 @@
     <Compile Include="HashString.cs" />
     <Compile Include="InFields.cs" />
     <Compile Include="Language.cs" />
-    <Compile Include="Order.cs" />
+    <Compile Include="Request.cs" />
     <Compile Include="OutFields.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="SHA.cs" />
