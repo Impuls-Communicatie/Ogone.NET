@@ -260,7 +260,7 @@ namespace Ogone
             allParameters.Add("AMOUNT", Price.ToString());
             allParameters.Add("CURRENCY", Currency.ToString());
             allParameters.Add("LANGUAGE", Language.ToString());
-            allParameters.Add("COMPLUS", CustomerID.ToString());
+            allParameters.Add("COMPLUS", CustomerID);
             allParameters.Add("CN", CustomerName);
             allParameters.Add("EMAIL", CustomerEMail);
             allParameters.Add("OWNERADDRESS", CustomerAddress);
@@ -372,7 +372,7 @@ namespace Ogone
 
             result.AppendLine("<form action=\"" + this.OgoneUrl + "\" method=\"post\">");
 
-            foreach (var item in this.GetAllParameters())
+            foreach (var item in this.ParametersToSend)
             {
                 result.AppendLine("\t<input type=\"hidden\" name=\"" + item.Key + "\" value=\"" + item.Value + "\" />");
             }
