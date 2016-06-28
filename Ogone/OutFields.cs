@@ -60,6 +60,7 @@ namespace Ogone
         NCERROR,
         ORDERID,
         PAYID,
+        PAYIDSUB,
         PAYMENT_REFERENCE,
         PM,
         SCO_CATEGORY,
