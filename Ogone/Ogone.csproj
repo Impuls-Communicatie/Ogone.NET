@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AliasGatewayRequest.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Encoding.cs" />
     <Compile Include="Environment.cs" />

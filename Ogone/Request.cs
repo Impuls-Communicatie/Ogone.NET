@@ -10,15 +10,19 @@ namespace Ogone
     /// </summary>
     public class Request
     {
-        private SHA _sha;
-        private string _shaInSignature;
-        private string _pspID;
-        private int _orderID;
-        private decimal _price;
-        private Language _language = Language.en_US;
-        private Currency _currency = Currency.EUR;
-        private IDictionary<InFields, string> extrafields;
+        protected SHA _sha;
+        protected string _shaInSignature;
+        protected string _pspID;
+        protected int _orderID;
+        protected decimal _price;
+        protected Language _language = Language.en_US;
+        protected Currency _currency = Currency.EUR;
+        protected IDictionary<InFields, string> extrafields;
 
+        protected Request()
+        {
+
+        }
         public Request(SHA sha, string shaInSignature, string pspID, int orderID, decimal price)
             : this(sha, shaInSignature, pspID, orderID, price, Encoding.UTF8, Environment.Test)
         {
@@ -217,7 +221,7 @@ namespace Ogone
             set;
         }
 
-        public string OgoneUrl
+        public virtual string OgoneUrl
         {
             get
             {
@@ -250,7 +254,7 @@ namespace Ogone
         /// Get a dictionary with all Ogone parameters that were filled in and ordered by key
         /// </summary>
         /// <returns></returns>
-        private IDictionary<string, string> GetAllParameters()
+        protected virtual IDictionary<string, string> GetAllParameters()
         {
             IDictionary<string, string> allParameters = new Dictionary<string, string>();
             IDictionary<string, string> parameters = new Dictionary<string, string>();
@@ -376,7 +380,11 @@ namespace Ogone
             {
                 result.AppendLine("\t<input type=\"hidden\" name=\"" + item.Key + "\" value=\"" + item.Value + "\" />");
             }
-
+            result.AppendLine(@"
+        <input type=""text""dxwcfdscss name=""CVC"" value=""123""/>
+        <input type=""text"" name=""CARDNO"" value=""4111111111111111"" />
+        <input type=""text"" name=""ED"" value=""1020"" />
+        <input type=""text"" name=""CN"" value=""T. Ester"" />");
             result.AppendLine("\t<input type=\"submit\" value=\"" + submitButtonText + "\" />");
             result.AppendLine("</form>");
 
