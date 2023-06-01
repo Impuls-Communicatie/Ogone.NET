@@ -125,85 +125,85 @@ namespace Ogone
             }
         }
 
-        public string CustomerID
+        public string? CustomerID
         {
             get;
             set;
         }
 
-        public string CustomerName
+        public string? CustomerName
         {
             get;
             set;
         }
 
-        public string CustomerEMail
+        public string? CustomerEMail
         {
             get;
             set;
         }
 
-        public string CustomerAddress
+        public string? CustomerAddress
         {
             get;
             set;
         }
 
-        public string CustomerCity
+        public string? CustomerCity
         {
             get;
             set;
         }
 
-        public string CustomerZipcode
+        public string? CustomerZipcode
         {
             get;
             set;
         }
 
-        public string CustomerCountryCode
+        public string? CustomerCountryCode
         {
             get;
             set;
         }
 
-        public string Logo
+        public string? Logo
         {
             get;
             set;
         }
 
-        public string HomeURL
+        public string? HomeURL
         {
             get;
             set;
         }
 
-        public string BackURL
+        public string? BackURL
         {
             get;
             set;
         }
 
-        public string CancelURL
+        public string? CancelURL
         {
             get;
             set;
         }
 
-        public string AcceptURL
+        public string? AcceptURL
         {
             get;
             set;
         }
 
-        public string DeclineURL
+        public string? DeclineURL
         {
             get;
             set;
         }
 
-        public string ExceptionURL
+        public string? ExceptionURL
         {
             get;
             set;
@@ -213,13 +213,13 @@ namespace Ogone
         {
             get;
             set;
-        }
+        } = Environment.Production;
 
         public Encoding Encoding
         {
             get;
             set;
-        }
+        } = Encoding.UTF8;
 
         public virtual string OgoneUrl
         {
@@ -264,20 +264,20 @@ namespace Ogone
             allParameters.Add("AMOUNT", Price.ToString());
             allParameters.Add("CURRENCY", Currency.ToString());
             allParameters.Add("LANGUAGE", Language.ToString());
-            allParameters.Add("COMPLUS", CustomerID);
-            allParameters.Add("CN", CustomerName);
-            allParameters.Add("EMAIL", CustomerEMail);
-            allParameters.Add("OWNERADDRESS", CustomerAddress);
-            allParameters.Add("OWNERTOWN", CustomerCity);
-            allParameters.Add("OWNERZIP", CustomerZipcode);
-            allParameters.Add("OWNERCTY", CustomerCountryCode);
-            allParameters.Add("LOGO", Logo);
-            allParameters.Add("HOMEURL", HomeURL);
-            allParameters.Add("BACKURL", BackURL);
-            allParameters.Add("CANCELURL", CancelURL);
-            allParameters.Add("ACCEPTURL", AcceptURL);
-            allParameters.Add("DECLINEURL", DeclineURL);
-            allParameters.Add("EXCEPTIONURL", ExceptionURL);
+            allParameters.Add("COMPLUS", CustomerID ?? string.Empty);
+            allParameters.Add("CN", CustomerName ?? string.Empty);
+            allParameters.Add("EMAIL", CustomerEMail ?? string.Empty);
+            allParameters.Add("OWNERADDRESS", CustomerAddress ?? string.Empty);
+            allParameters.Add("OWNERTOWN", CustomerCity ?? string.Empty);
+            allParameters.Add("OWNERZIP", CustomerZipcode ?? string.Empty);
+            allParameters.Add("OWNERCTY", CustomerCountryCode ?? string.Empty);
+            allParameters.Add("LOGO", Logo ?? string.Empty);
+            allParameters.Add("HOMEURL", HomeURL ?? string.Empty);
+            allParameters.Add("BACKURL", BackURL ?? string.Empty);
+            allParameters.Add("CANCELURL", CancelURL ?? string.Empty);
+            allParameters.Add("ACCEPTURL", AcceptURL ?? string.Empty);
+            allParameters.Add("DECLINEURL", DeclineURL ?? string.Empty);
+            allParameters.Add("EXCEPTIONURL", ExceptionURL ?? string.Empty);
 
             foreach (KeyValuePair<InFields, string> extrafield in extrafields)
             {
