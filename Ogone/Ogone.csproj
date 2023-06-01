@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/mastrosoft/Ogone.NET/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/mastrosoft/Ogone.NET/</PackageProjectUrl>
     <Copyright>Mastronardi Software - Impuls Communicatie</Copyright>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

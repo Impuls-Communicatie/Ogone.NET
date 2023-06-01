@@ -51,10 +51,3 @@ steps:
         !**\obj\**
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: NuGetCommand@2
-  displayName: Create nuget packages
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/Ogone.csproj'
-    versioningScheme: 'off'
