@@ -56,7 +56,7 @@ steps:
   displayName: Copy files for artifacts
   inputs:
     SourceFolder: '$(agent.BuildDirectory)'
-    Contents: '**/*.nuget'
+    Contents: '**/*.nupkg'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/nuget'
 
 - task: PublishBuildArtifacts@1
