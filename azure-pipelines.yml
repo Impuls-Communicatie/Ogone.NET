@@ -16,12 +16,15 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: Install nuget tools
 
 - task: NuGetCommand@2
+  displayName: Restore nuget packages
   inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: Build Solution
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
@@ -29,11 +32,19 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: Run Unit Tests
   inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+        **\*.test.dll
+        **\*.tests.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
+  displayName: Create nuget packages
   inputs:
     command: 'pack'
     packagesToPack: '**/Ogone.csproj'
