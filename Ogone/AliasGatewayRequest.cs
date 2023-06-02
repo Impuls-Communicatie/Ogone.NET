@@ -8,12 +8,12 @@ namespace Ogone
 {
     public class AliasGatewayRequest : Request
     {
-        public AliasGatewayRequest(SHA sha, string shaInSignature, string pspID, int orderID)
+        public AliasGatewayRequest(SHA sha, string shaInSignature, string pspID, string orderID)
             : this(sha, shaInSignature, pspID, orderID, Encoding.UTF8, Environment.Test)
         {
         }
 
-        public AliasGatewayRequest(SHA sha, string shaInSignature, string pspID, int orderID, Encoding encoding, Environment environment)
+        public AliasGatewayRequest(SHA sha, string shaInSignature, string pspID, string orderID, Encoding encoding, Environment environment)
         {
             if (string.IsNullOrWhiteSpace(shaInSignature))
             {

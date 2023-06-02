@@ -9,7 +9,7 @@ namespace Ogone.Tests
     {
         private const string SHA_IN_SIGNATURE = "Mysecretsig1875!?";
         private const string PSP = "CompanyName";
-        private const int ORDER_ID = 123;
+        private const string ORDER_ID = "123";
         private const decimal PRICE = 15.72M;
         private const string CUSTOMER_NAME = "鉄拳";
 

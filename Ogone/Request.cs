@@ -13,7 +13,7 @@ namespace Ogone
         protected SHA _sha;
         protected string _shaInSignature;
         protected string _pspID;
-        protected int _orderID;
+        protected string _orderID;
         protected decimal _price;
         protected Language _language = Language.en_US;
         protected Currency _currency = Currency.EUR;
@@ -23,12 +23,12 @@ namespace Ogone
         {
 
         }
-        public Request(SHA sha, string shaInSignature, string pspID, int orderID, decimal price)
+        public Request(SHA sha, string shaInSignature, string pspID, string orderID, decimal price)
             : this(sha, shaInSignature, pspID, orderID, price, Encoding.UTF8, Environment.Test)
         {
         }
 
-        public Request(SHA sha, string shaInSignature, string pspID, int orderID, decimal price, Encoding encoding, Environment environment)
+        public Request(SHA sha, string shaInSignature, string pspID, string orderID, decimal price, Encoding encoding, Environment environment)
         {
             if (string.IsNullOrWhiteSpace(shaInSignature))
             {
@@ -40,7 +40,7 @@ namespace Ogone
                 throw new ArgumentException("PSPID is required");
             }
 
-            if (orderID < 1)
+            if (string.IsNullOrEmpty(orderID))
             {
                 throw new ArgumentException("Invalid Order ID");
             }
@@ -85,7 +85,7 @@ namespace Ogone
             }
         }
 
-        public int OrderID
+        public string OrderID
         {
             get
             {
